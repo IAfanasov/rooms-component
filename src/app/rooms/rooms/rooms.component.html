@@ -1,0 +1,59 @@
+<div *ngFor="let room of rooms; let roomIndex = index"
+     class='room-row'>
+
+  <div>
+    Room {{ roomIndex + 1 }}
+  </div>
+
+  <button *ngIf="rooms.length > 1"
+          mat-icon-button
+          (click)="removeRoom(roomIndex)">
+    <i class="fa fa-close"></i>
+  </button>
+
+  <mat-form-field>
+    <mat-select placeholder='Adults'
+                [(value)]='room.adults'>
+      <mat-option *ngFor="let item of emptyArray(maxAdultsOrChildCount); let i = index"
+                  [value]="i + 1">
+        {{ i + 1 }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder='Childs'
+                [(value)]='room.childs'
+                (valueChange)='childsCountChanged( roomIndex,$event)'>
+      <mat-option *ngFor="let item of emptyArray(maxAdultsOrChildCount); let i = index"
+                  [value]="i">
+        {{ i }}
+      </mat-option>
+      <mat-option [value]="maxAdultsOrChildCount">
+        {{ maxAdultsOrChildCount }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="ages">
+    <mat-form-field *ngFor="let item of emptyArray(room.childs); let i = index">
+      <mat-select placeholder='Age'>
+        <mat-option *ngFor="let item of emptyArray(maxChildAge); let i = index"
+                    [value]="i">
+          {{ i }}
+        </mat-option>
+        <mat-option [value]="maxChildAge">
+          {{ maxChildAge }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</div>
+
+<button mat-button
+        (click)="addRoom()"
+        *ngIf="rooms.length < maxRoomsCount">
+  <i class="fa fa-plus"></i>
+  Add room
+</button>
